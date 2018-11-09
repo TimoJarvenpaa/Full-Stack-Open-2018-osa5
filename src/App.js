@@ -50,8 +50,12 @@ class App extends React.Component {
       this.setState({
         username: '',
         password: '',
-        user
+        user,
+        notification: `Welcome ${user.name}`
       })
+      setTimeout(() => {
+        this.setState({ notification: null })
+      }, 5000)
     } catch (exception) {
       this.setState({
         error: 'invalid username or password'
@@ -85,8 +89,12 @@ class App extends React.Component {
       blogs: this.state.blogs.concat(savedBlog),
       title: '',
       author: '',
-      url: ''
+      url: '',
+      notification: `a new blog '${savedBlog.title}' by ${savedBlog.author} added`
     })
+    setTimeout(() => {
+      this.setState({ notification: null })
+    }, 5000)
   }
 
   render() {
