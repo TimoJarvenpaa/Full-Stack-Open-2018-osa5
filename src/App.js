@@ -16,7 +16,8 @@ class App extends React.Component {
       notification: null,
       title: '',
       author: '',
-      url: ''
+      url: '',
+      loginVisible: false
     }
   }
 
@@ -97,77 +98,22 @@ class App extends React.Component {
     }, 5000)
   }
 
+
   render() {
-
-    const loginForm = () => (
-      <div>
-        <h2>Log in to the application</h2>
-        <form onSubmit={this.login}>
-          <div>
-            username:
-            <input
-              type="text"
-              name="username"
-              value={this.state.username}
-              onChange={this.handleFieldChange}
-            />
-          </div>
-          <div>
-            password:
-            <input
-              type="password"
-              name="password"
-              value={this.state.password}
-              onChange={this.handleFieldChange}
-            />
-          </div>
-          <button type="submit">login</button>
-        </form>
-      </div>
-    )
-
-    const blogForm = () => (
-      <div>
-        <h2>Create new</h2>
-        <form onSubmit={this.addBlog}>
-          <div>
-            title:
-            <input
-              type="text"
-              name="title"
-              value={this.state.title}
-              onChange={this.handleFieldChange}
-            />
-          </div>
-          <div>
-            author:
-            <input
-              type="text"
-              name="author"
-              value={this.state.author}
-              onChange={this.handleFieldChange}
-            />
-          </div>
-          <div>
-            url:
-            <input
-              type="text"
-              name="url"
-              value={this.state.url}
-              onChange={this.handleFieldChange}
-            />
-          </div>
-          <button type="submit">create</button>
-        </form>
-      </div>
-    )
 
     if (this.state.user === null) {
       return (
         <div>
           <Notification message={this.state.notification} />
           <ErrorNotification message={this.state.error} />
-          {loginForm()}
+          <Togglable buttonLabel="sign in">
+            <LoginForm
+              username={this.state.username}
+              password={this.state.password}
+              handleChange={this.handleFieldChange}
+              handleSubmit={this.login}
+            />
+          </Togglable>
         </div>
       )
     }
@@ -180,7 +126,13 @@ class App extends React.Component {
         <p>{this.state.user.name} is currently logged in </p>
         <button onClick={this.logout}>logout</button>
 
-        {blogForm()}
+        <BlogForm
+          title={this.state.title}
+          author={this.state.author}
+          url={this.state.url}
+          handleChange={this.handleFieldChange}
+          handleSubmit={this.addBlog}
+        />
 
         {this.state.blogs.map(blog =>
           <Blog key={blog.id} blog={blog} />
@@ -210,6 +162,103 @@ const ErrorNotification = ({ message }) => {
       {message}
     </div>
   )
+}
+
+const LoginForm = ({ handleSubmit, handleChange, username, password }) => {
+  return (
+    <div>
+      <h2>Log in to the application</h2>
+
+      <form onSubmit={handleSubmit}>
+        <div>
+          username:
+          <input
+            name="username"
+            value={username}
+            onChange={handleChange}
+          />
+        </div>
+        <div>
+          password:
+          <input
+            type="password"
+            name="password"
+            value={password}
+            onChange={handleChange}
+          />
+        </div>
+        <button type="submit">login</button>
+      </form>
+    </div>
+  )
+}
+
+const BlogForm = ({ handleSubmit, handleChange, title, author, url }) => {
+  return (
+    <div>
+      <h2>Create new</h2>
+      <form onSubmit={handleSubmit}>
+        <div>
+          title:
+          <input
+            type="text"
+            name="title"
+            value={title}
+            onChange={handleChange}
+          />
+        </div>
+        <div>
+          author:
+          <input
+            type="text"
+            name="author"
+            value={author}
+            onChange={handleChange}
+          />
+        </div>
+        <div>
+          url:
+          <input
+            type="text"
+            name="url"
+            value={url}
+            onChange={handleChange}
+          />
+        </div>
+        <button type="submit">create</button>
+      </form>
+    </div>
+  )
+}
+
+class Togglable extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      visible: false
+    }
+  }
+
+  toggleVisibility = () => {
+    this.setState({ visible: !this.state.visible })
+  }
+
+  render() {
+    const hideWhenVisible = { display: this.state.visible ? 'none' : '' }
+    const showWhenVisible = { display: this.state.visible ? '' : 'none' }
+
+    return (
+      <div>
+        <div style={hideWhenVisible}>
+          <button onClick={this.toggleVisibility}>{this.props.buttonLabel}</button>
+        </div>
+        <div style={showWhenVisible}>
+          {this.props.children}
+          <button onClick={this.toggleVisibility}>cancel</button>
+        </div>
+      </div>
+    )
+  }
 }
 
 export default App;
