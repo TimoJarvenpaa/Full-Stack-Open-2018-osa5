@@ -1,5 +1,6 @@
 import React from 'react'
 import blogService from '../services/blogs'
+import '../index.css'
 
 class Blog extends React.Component {
   constructor(props) {
@@ -26,14 +27,31 @@ class Blog extends React.Component {
     }
 
     const updatedBlog = await blogService.update(blog)
-    this.props.updateBlog(updatedBlog)
+    this.props.updateBlogs(updatedBlog)
+  }
+
+  removeBlog = async () => {
+    const message = `Do you want to delete '${this.props.blog.title}' by ${this.props.blog.author}?`
+    if (this.props.user.id === this.props.blog.user._id || this.props.blog.user === null) {
+      if (window.confirm(message)) {
+        try {
+          await blogService.remove(this.props.blog.id.toString())
+          this.props.removeFromBlogs(this.props.blog)
+        } catch (exeption) {
+          console.log(exeption)
+        }
+      }
+    } else {
+      window.alert('You don\'t have permission to remove this blog')
+    }
   }
 
   render() {
 
     const blogStyle = {
-      paddingTop: 10,
+      paddingTop: 6,
       paddingLeft: 2,
+      paddingBottom: 2,
       border: 'solid',
       borderWidth: 1,
       marginBottom: 5
@@ -49,6 +67,7 @@ class Blog extends React.Component {
             <button onClick={this.likeBlog}>like</button>
           </div>
           <div>added by {this.props.blog.user.name}</div>
+          <button className='blueButton' onClick={this.removeBlog}>delete</button>
         </div>
       )
     }

@@ -98,8 +98,7 @@ class App extends React.Component {
     }, 5000)
   }
 
-  updateBlog = async (updatedBlog) => {
-    console.log(updatedBlog)
+  updateBlogs = async (updatedBlog) => {
     const blogs = this.state.blogs.map(blog => {
       return blog.id === updatedBlog.id ? updatedBlog : blog
     })
@@ -108,6 +107,11 @@ class App extends React.Component {
 
   compareLikes = (a, b) => {
     return b.likes - a.likes
+  }
+
+  removeFromBlogs = async (removedBlog) => {
+    const blogs = this.state.blogs.filter(blog => blog.id !== removedBlog.id)
+    await this.setState({ blogs: blogs.sort(this.compareLikes) })
   }
 
   render() {
@@ -149,7 +153,9 @@ class App extends React.Component {
           <Blog
             key={blog.id}
             blog={blog}
-            updateBlog={this.updateBlog}
+            user={this.state.user}
+            updateBlogs={this.updateBlogs}
+            removeFromBlogs={this.removeFromBlogs}
           />
         )}
       </div>
