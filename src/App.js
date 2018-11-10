@@ -69,6 +69,7 @@ class App extends React.Component {
 
   logout = () => {
     window.localStorage.removeItem('loggedBlogAppUser')
+    blogService.setToken(null)
     this.setState({
       user: null,
       title: '',
@@ -261,4 +262,4 @@ class Togglable extends React.Component {
   }
 }
 
-export default App;
+export default App
