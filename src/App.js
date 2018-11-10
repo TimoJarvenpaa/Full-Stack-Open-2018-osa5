@@ -23,7 +23,7 @@ class App extends React.Component {
 
   componentDidMount = async () => {
     const blogs = await blogService.getAll()
-    this.setState({ blogs })
+    this.setState({ blogs: blogs.sort(this.compareLikes) })
 
     const loggedUserJSON = window.localStorage.getItem('loggedBlogAppUser')
     if (loggedUserJSON) {
@@ -87,7 +87,7 @@ class App extends React.Component {
 
     const savedBlog = await blogService.create(blogObject)
     this.setState({
-      blogs: this.state.blogs.concat(savedBlog),
+      blogs: this.state.blogs.concat(savedBlog).sort(this.compareLikes),
       title: '',
       author: '',
       url: '',
@@ -103,7 +103,11 @@ class App extends React.Component {
     const blogs = this.state.blogs.map(blog => {
       return blog.id === updatedBlog.id ? updatedBlog : blog
     })
-    await this.setState({ blogs })
+    await this.setState({ blogs: blogs.sort(this.compareLikes) })
+  }
+
+  compareLikes = (a, b) => {
+    return b.likes - a.likes
   }
 
   render() {
