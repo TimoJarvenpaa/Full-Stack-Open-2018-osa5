@@ -21,10 +21,9 @@ class App extends React.Component {
     }
   }
 
-  componentDidMount() {
-    blogService.getAll().then(blogs =>
-      this.setState({ blogs })
-    )
+  componentDidMount = async () => {
+    const blogs = await blogService.getAll()
+    this.setState({ blogs })
 
     const loggedUserJSON = window.localStorage.getItem('loggedBlogAppUser')
     if (loggedUserJSON) {
@@ -99,6 +98,13 @@ class App extends React.Component {
     }, 5000)
   }
 
+  updateBlog = async (updatedBlog) => {
+    console.log(updatedBlog)
+    const blogs = this.state.blogs.map(blog => {
+      return blog.id === updatedBlog.id ? updatedBlog : blog
+    })
+    await this.setState({ blogs })
+  }
 
   render() {
 
@@ -136,7 +142,11 @@ class App extends React.Component {
         />
 
         {this.state.blogs.map(blog =>
-          <Blog key={blog.id} blog={blog} />
+          <Blog
+            key={blog.id}
+            blog={blog}
+            updateBlog={this.updateBlog}
+          />
         )}
       </div>
     )
