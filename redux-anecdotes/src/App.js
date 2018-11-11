@@ -1,5 +1,6 @@
-import React from 'react';
-import AnecdoteList from './components/AnecdoteList';
+import React from 'react'
+import AnecdoteList from './components/AnecdoteList'
+import AnecdoteForm from './components/AnecdoteForm'
 
 
 class App extends React.Component {
@@ -7,11 +8,7 @@ class App extends React.Component {
     return (
       <div>
         <AnecdoteList />
-        <h2>create new</h2>
-        <form>
-          <div><input /></div>
-          <button>create</button> 
-        </form>
+        <AnecdoteForm />
       </div>
     )
   }
