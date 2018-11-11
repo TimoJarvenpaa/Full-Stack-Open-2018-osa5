@@ -1,5 +1,8 @@
 import React from 'react'
 import Blog from './components/Blog'
+import LoginForm from './components/LoginForm'
+import BlogForm from './components/BlogForm'
+import Togglable from './components/Togglable'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import './index.css'
@@ -183,103 +186,6 @@ const ErrorNotification = ({ message }) => {
       {message}
     </div>
   )
-}
-
-const LoginForm = ({ handleSubmit, handleChange, username, password }) => {
-  return (
-    <div>
-      <h2>Log in to the application</h2>
-
-      <form onSubmit={handleSubmit}>
-        <div>
-          username:
-          <input
-            name="username"
-            value={username}
-            onChange={handleChange}
-          />
-        </div>
-        <div>
-          password:
-          <input
-            type="password"
-            name="password"
-            value={password}
-            onChange={handleChange}
-          />
-        </div>
-        <button type="submit">login</button>
-      </form>
-    </div>
-  )
-}
-
-const BlogForm = ({ handleSubmit, handleChange, title, author, url }) => {
-  return (
-    <div>
-      <h2>Create new</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          title:
-          <input
-            type="text"
-            name="title"
-            value={title}
-            onChange={handleChange}
-          />
-        </div>
-        <div>
-          author:
-          <input
-            type="text"
-            name="author"
-            value={author}
-            onChange={handleChange}
-          />
-        </div>
-        <div>
-          url:
-          <input
-            type="text"
-            name="url"
-            value={url}
-            onChange={handleChange}
-          />
-        </div>
-        <button type="submit">create</button>
-      </form>
-    </div>
-  )
-}
-
-class Togglable extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      visible: false
-    }
-  }
-
-  toggleVisibility = () => {
-    this.setState({ visible: !this.state.visible })
-  }
-
-  render() {
-    const hideWhenVisible = { display: this.state.visible ? 'none' : '' }
-    const showWhenVisible = { display: this.state.visible ? '' : 'none' }
-
-    return (
-      <div>
-        <div style={hideWhenVisible}>
-          <button onClick={this.toggleVisibility}>{this.props.buttonLabel}</button>
-        </div>
-        <div style={showWhenVisible}>
-          {this.props.children}
-          <button onClick={this.toggleVisibility}>cancel</button>
-        </div>
-      </div>
-    )
-  }
 }
 
 export default App

@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import blogService from '../services/blogs'
 import '../index.css'
 
@@ -57,7 +58,7 @@ class Blog extends React.Component {
       marginBottom: 5
     }
 
-    const showOnlyToCorrectUser = { 
+    const showOnlyToCorrectUser = {
       display: (this.props.blog.user._id === this.props.user.id || this.props.blog.user === null) ? '' : 'none'
     }
 
@@ -82,6 +83,13 @@ class Blog extends React.Component {
       </div>
     )
   }
+}
+
+Blog.propTypes = {
+  blog: PropTypes.object.isRequired,
+  user: PropTypes.object.isRequired,
+  updateBlogs: PropTypes.func.isRequired,
+  removeFromBlogs: PropTypes.func.isRequired
 }
 
 export default Blog
