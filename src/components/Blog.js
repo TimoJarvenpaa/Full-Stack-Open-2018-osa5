@@ -64,7 +64,7 @@ class Blog extends React.Component {
 
     if (this.state.displayMoreInfo) {
       return (
-        <div onClick={this.toggleInfo} style={blogStyle}>
+        <div onClick={this.toggleInfo} style={blogStyle} className='fullInfo'>
           <div>{this.props.blog.title} by {this.props.blog.author}</div>
           <a href={this.props.blog.url}>{this.props.blog.url}</a>
           <div>
@@ -78,7 +78,7 @@ class Blog extends React.Component {
     }
 
     return (
-      <div onClick={this.toggleInfo} style={blogStyle}>
+      <div onClick={this.toggleInfo} style={blogStyle} className='defaultInfo'>
         {this.props.blog.title} {this.props.blog.author}
       </div>
     )
