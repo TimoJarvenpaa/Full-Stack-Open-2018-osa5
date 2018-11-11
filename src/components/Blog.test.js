@@ -2,7 +2,7 @@ import React from 'react'
 import { shallow } from 'enzyme'
 import Blog from './Blog'
 
-describe.only('<Blog />', () => {
+describe.skip('<Blog />', () => {
 
   const user = {
     id: '09876554321',
